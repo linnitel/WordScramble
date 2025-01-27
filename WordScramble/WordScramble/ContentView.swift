@@ -63,6 +63,11 @@ struct ContentView: View {
 			return
 		}
 
+		guard isShorter(word: answer) else {
+			wodrError(title: "Word too short", massage: "Words must be at least three letters long.")
+			return
+		}
+
 		withAnimation {
 			usedWords.insert(answer, at: 0)
 		}
@@ -108,6 +113,16 @@ struct ContentView: View {
 		errorTitle = title
 		errorMessage = massage
 		showErrorAlert = true
+	}
+
+	func isShorter(word: String) -> Bool {
+		if word.count < 3 {
+			return false
+		}
+		if word == rootWord {
+			return false
+		}
+		return true
 	}
 }
 
