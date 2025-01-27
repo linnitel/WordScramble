@@ -40,6 +40,11 @@ struct ContentView: View {
 			} message: {
 					Text(errorMessage)
 			}
+			.toolbar {
+				Button("New game") {
+					startGame()
+				}
+			}
 		}
     }
 
@@ -79,6 +84,8 @@ struct ContentView: View {
 			if let startWords = try? String(contentsOf: startWordsURL, encoding: .ascii) {
 				let allWords = startWords.split(separator: "\n")
 				rootWord = String(allWords.randomElement() ?? "silkworm")
+				usedWords = []
+				newWord = ""
 				return
 			}
 		}
