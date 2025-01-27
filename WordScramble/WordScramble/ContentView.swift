@@ -16,22 +16,29 @@ struct ContentView: View {
 	@State private var errorMessage = ""
 	@State private var showErrorAlert = false
 
+	@State private var score = 0
+
     var body: some View {
 		NavigationStack {
-			List {
-				Section {
-					TextField("Enter your word", text: $newWord)
-						.textInputAutocapitalization(.never)
-				}
-				Section {
-					ForEach(usedWords, id: \.self) { word in
-						HStack {
-							Image(systemName: "\(word.count).circle")
-							Text(word)
+			ZStack(alignment: .bottom) {
+				List {
+					Section {
+						TextField("Enter your word", text: $newWord)
+							.textInputAutocapitalization(.never)
+					}
+					Section {
+						ForEach(usedWords, id: \.self) { word in
+							HStack {
+								Image(systemName: "\(word.count).circle")
+								Text(word)
+							}
 						}
 					}
 				}
+				Text("The score is: \(score)")
+					.font(.largeTitle)
 			}
+
 			.navigationTitle(rootWord)
 			.onSubmit(addNewWord)
 			.onAppear(perform: startGame)
@@ -76,6 +83,7 @@ struct ContentView: View {
 		withAnimation {
 			usedWords.insert(answer, at: 0)
 		}
+		score += answer.count
 		newWord = ""
 	}
 
@@ -86,6 +94,7 @@ struct ContentView: View {
 				rootWord = String(allWords.randomElement() ?? "silkworm")
 				usedWords = []
 				newWord = ""
+				score = 0
 				return
 			}
 		}
